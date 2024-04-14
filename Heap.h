@@ -36,32 +36,35 @@ Heap<T>::Heap(bool isMinSort) : isMax(!isMinSort) { }
 template<typename T>
 Heap<T>::Heap(const T elements[], int arraySize)
 {
-  // Sequentially add elements to the heap vector
+  v.assign(elements, elements + arraySize);
 }
 
 // Insert element into the heap and maintain the heap property
 template<typename T>
 void Heap<T>::add(const T& element)
 {
-  // Append element to the end of the vector
-  // Set the currentIndex the last element in the vector
-  
-  //Pseudocode: Maintain the heap property by up-heapify
-  //   // Feel free to reorganize this pseudocode's function
-  //   while currentIndex > 0
-  //      set parent index (use a formula for a node's parent)
-  //      if a max-heap
-  //          if current priority is greater than its parent's priority, 
-  //             swap these vector elements
-  //          else
-  //             break because the tree is a heap now
-  //
-  //      else it's a min heap
-  //          if current priority is less than its parent's priority, 
-  //             swap these vector elements
-  //          else
-  //             break because the tree is a heap now
-  //      currentIndex = parentIndex;
+  v.push_back(element);
+  int currentIndex = v.size() - 1;
+    while (currentIndex > 0) {
+      int parentIndex = (currentIndex - 1) / 2;
+      if (isMax) {
+        if (v[currentIndex] > v[parentIndex]) {
+          _swap(currentIndex, parentIndex);
+        }
+        else {
+          break;
+        }
+      }
+      else {
+        if (v[currentIndex] < v[parentIndex]) {
+          _swap(currentIndex, parentIndex);
+        }
+        else {
+          break;
+        }
+      }
+      currentIndex = parentIndex;
+    }
 }
 
 // Exchange the elements in the vector at the given indexes
@@ -77,31 +80,53 @@ void Heap<T>::_swap(int idx1, int idx2)
 template<typename T>
 T Heap<T>::remove()
 {
-  // if heap is empty, 
-  //    throw runtime_error("Heap is empty");
-		
-  // Save (removed) element at top of the heap
+  if (v.size() == 0) {
+    throw runtime_error("Heap is empty");
+  }
   T element = v[0];
-  // Put last element at the top of the heap
-	
-  // Maintain the heap property by down-heapify
-  // Set currentIndex = 0;
-  // 
-  // while currentIndex is less than vector size
-  //   get left and right child indexes (use a formula)
-		
-  //   if left child index is >= vector size, the tree is a heap
-  //   if this is a max-heap, 
-  //     Find the maximum between two children (keep in mind
-  //     a complete tree's right index might be out of range) 
-		
-  //     Swap if the current node is less than or equal to the maximum
-  //     else break because the tree is a heap
-  //     update currentIndex to maxIndex
-  //   else this is a min-heap,
-  //     repeat the above but for a min-heap
-  //
-  //  return the saved (removed) element	
+	v[0] = v.back();
+  v.pop_back();
+  int currentIndex = 0;
+  while (currentIndex < v.size()) {
+    int leftChildIndex = 2 * currentIndex + 1;
+    int rightChildIndex = 2 * currentIndex + 2;
+    if (leftChildIndex >= v.size()) {
+      break;
+    }
+    int targetIndex = 0;
+    if (rightChildIndex < v.size()) {
+      if (isMax) {
+        if (v[leftChildIndex] > v[rightChildIndex]) {
+          targetIndex = leftChildIndex;
+        } else {
+          targetIndex = rightChildIndex;
+        }
+      } else {
+          if (v[leftChildIndex] < v[rightChildIndex]) {
+            targetIndex = leftChildIndex;
+          } else {
+            targetIndex = rightChildIndex;
+          }
+      }
+    } else {
+      targetIndex = leftChildIndex;
+      }
+        if (isMax) {
+            if (v[currentIndex] < v[targetIndex]) {
+                _swap(currentIndex, targetIndex);
+                currentIndex = targetIndex;
+            } else {
+                break;
+            }
+        } else {
+            if (v[currentIndex] > v[targetIndex]) {
+                _swap(currentIndex, targetIndex);
+                currentIndex = targetIndex;
+            } else {
+                break;
+            }
+        }
+    }
   return element;
 }
 
