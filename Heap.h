@@ -36,7 +36,9 @@ Heap<T>::Heap(bool isMinSort) : isMax(!isMinSort) { }
 template<typename T>
 Heap<T>::Heap(const T elements[], int arraySize)
 {
-  v.assign(elements, elements + arraySize);
+  for (int i = 0; i < arraySize; i++) {
+    v.push_back(elements[i]);
+  }
 }
 
 // Insert element into the heap and maintain the heap property
