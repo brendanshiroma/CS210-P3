@@ -36,8 +36,8 @@ Heap<T>::Heap(bool isMinSort) : isMax(!isMinSort) { }
 template<typename T>
 Heap<T>::Heap(const T elements[], int arraySize)
 {
-  for (int i = 0; i < arraySize; i++) {
-    v.push_back(elements[i]);
+   for (int i = 0; i < arraySize; i++) {
+    this->add(elements[i]);
   }
 }
 
