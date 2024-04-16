@@ -24,9 +24,12 @@ vector<T> heapSort(Heap<T> heap, int increasingOrder)
   // store elements
   vector<int> v;
 
-  for (int i = 0; i < v.size(); i++) {
+  while (heap.getSize() > 0) {
     T element = heap.remove();
     v.push_back(element);
+  }
+  if (!increasingOrder) {
+    
   }
 
   return v;
