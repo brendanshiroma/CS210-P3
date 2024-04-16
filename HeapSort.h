@@ -29,7 +29,7 @@ vector<T> heapSort(Heap<T> heap, int increasingOrder)
     v.push_back(element);
   }
   if (!increasingOrder) {
-    
+    reverse(v.begin(), v.end());
   }
 
   return v;
